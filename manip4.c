@@ -9,6 +9,7 @@ octets).
 */
 
 #include<stdio.h>
+#include<string.h>
 
 
 struct Bouquin {
@@ -24,7 +25,7 @@ int main(int argc, char const *argv[])
 	int nbBouquinAjouter , nbBouquinDejaEntrer , nbBouquinActuel , c;
 	Bouquin livreEntre , livre , livreNv;
 
-	pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "r") ;	
+	pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/Fichiers/manip4/fichierBouquin.txt", "r") ;	
 	
 	fseek(pointeur_bouquins, 0, SEEK_END);
     nbBouquinDejaEntrer = ftell(pointeur_bouquins)/sizeof(livre);
@@ -38,7 +39,7 @@ int main(int argc, char const *argv[])
 	
 	if (choixMiseJour=='A' || choixMiseJour=='a')
 	{
-		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "a") ;	
+		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/Fichiers/manip4/fichierBouquin.txt", "a") ;	
 
 		fprintf(stdout, "donner le nombre de bouquins à ajouter :\n" );
 		fscanf(stdin,"%d", &nbBouquinAjouter);
@@ -56,7 +57,7 @@ int main(int argc, char const *argv[])
 
 		printf("livre \t auteur \n ");
 		
-		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "r") ;		
+		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/Fichiers/manip4/fichierBouquin.txt", "r") ;		
 		
 		nbBouquinActuel = nbBouquinDejaEntrer + nbBouquinAjouter ;
 		
@@ -74,25 +75,27 @@ int main(int argc, char const *argv[])
 		scanf("%s %s",livreEntre.titre,livreEntre.auteur);
 		
 		c = 0;
-		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "r") ;
-		
+		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/Fichiers/manip4/fichierBouquin.txt", "r+") ;
+		printf("dkhel\n");
 		while(fread(&livre,sizeof(Bouquin),1,pointeur_bouquins))
 		{	
 			printf("dkhelt la boucle\n");
-			if (livreEntre.titre == livre.titre && livreEntre.auteur ==livre.auteur)
+			printf("livreEntre.titre %s \t livre.titre%s\n",livreEntre.titre , livre.titre );
+			
+			if ( !strcmp(livreEntre.titre,livre.titre) && !strcmp(livreEntre.auteur,livre.auteur))
 			{
 				printf("entrer le titre du livre puis le auteur du livre qui remplace le bouquin %s \t %s \n", livre.titre ,livre.auteur );
 				scanf("%s %s",livreNv.titre,livreNv.auteur);
-				pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "w") ;
-				livre = livreNv ;
-				fclose(pointeur_bouquins);
+				fseek(pointeur_bouquins,-1,2);
+				fwrite(&livreNv ,sizeof(Bouquin),1, pointeur_bouquins) ;
+				
 				c++;
 			}
 
 		}
 		fclose(pointeur_bouquins);
 
-		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "r") ;
+		pointeur_bouquins =fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/Fichiers/manip4/fichierBouquin.txt", "r") ;
 
 		if(c == 0){
 			printf("le bouquin que vous avez entré ne figure pas dans le fichier désolé  :/ \n");
