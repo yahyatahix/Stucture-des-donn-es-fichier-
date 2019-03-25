@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
 	Bouquin livre;
 	int nbBouquin;
 	FILE * pointeur_bouquins ;
-	pointeur_bouquins = fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/STD/manip3/fichierBouquin.txt", "w") ;
+	pointeur_bouquins = fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "w") ;
 
 	fprintf(stdout, "donner le nombre de bouquins à entrer\n" );
 	fscanf(stdin,"%d", &nbBouquin);
@@ -38,14 +38,16 @@ int main(int argc, char const *argv[])
 		
 		
 	}	
+	fclose(pointeur_bouquins);
+
+	pointeur_bouquins = fopen("/media/tahix/FUTUR/etudes/18-19/info/TP-TD/Langage_C/STD/manip3/fichierBouquin.txt", "r") ;
 	printf("livre \t auteur \n ");
 	
-	for (int i = 0; i < nbBouquin; i++)
-	{
-		if(!fread(&livre,sizeof(livre),i+1,pointeur_bouquins)){
-			printf("%s\t %s\n ",livre.titre ,livre.auteur);
+	Bouquin bq ;
+	while(fread(&bq,sizeof(Bouquin),1,pointeur_bouquins)){
+			printf("%s\t %s\n ",bq.titre ,bq.auteur);
 		}
-	}
+	
 	//fread(&livre,sizeof(livre),1,pointeur_bouquins);
 
 	fclose(pointeur_bouquins);
